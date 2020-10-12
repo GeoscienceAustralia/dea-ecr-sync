@@ -1,0 +1,48 @@
+service: dockerhub-ecr-sync
+app: ecr-sync
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.6
+
+  stage: dev
+  region: ap-southeast-2
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ecr:*"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "ServerlessDeploymentBucket"
+            - "/*"
+
+functions:
+  ecr_sync:
+    handler: lambda_function.lambda_handler
+    timeout: 600
+    events:
+      - eventBridge:
+          schedule: rate(1 day)
+    environment:
+      registry_id: ${env:AWS_ACCOUND_ID}
+
+custom:
+  pythonRequirements:
+    usePipenv: false
+    pythonBin: /usr/local/bin/python3
+
+plugins:
+  - serverless-python-requirements

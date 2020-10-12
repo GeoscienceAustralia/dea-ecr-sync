@@ -1,0 +1,22 @@
+on:
+  push:
+    paths:
+      - '*.py'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8.1
+          architecture: x64
+      - name: Checkout PyTorch
+        uses: actions/checkout@master
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run Flake
+        run: |
+          flake8 --ignore=E902 ./serverless/lambda_function.py
