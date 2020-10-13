@@ -1,0 +1,6 @@
+.terraform/*
+serverless/.serverless/*
+serverless/node_modules/*
+serverless/package-lock.json
+terraform/terraform.tfstate*
+
