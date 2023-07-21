@@ -1,3 +1,10 @@
+# Repository Archived - DO NOT USE
+
+The code in this repository has some big problems and is no longer used.
+
+`skopeo` is a poor choice for copying or syncing images from Dockerhub, because *every* sync or copy counts as a *Pull*, regardless of any data being copied. Completely defeating the entire purpose of this entier thing.
+
+
 ### GeoscienceAustralia Dockerhub to ECR Sync Lambda
 
 AWS Lambda to mirror public docker images to ECR, triggered using a scheduled CloudWatch event, and based on https://pypi.org/project/ecr-mirror/
